@@ -4,6 +4,7 @@ import subprocess
 import os
 import logging
 from status import list_tools, list_examinations, get_all_tools_and_examinations
+from model_checking import mcc_service
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -44,6 +45,9 @@ def get_examinations(tool):
 def get_all_tools_and_examinations_route():
     tools_info = get_all_tools_and_examinations()
     return jsonify({'tools_info': tools_info})
+
+# Add the new MCC service route
+app.add_url_rule('/mcc/<col_flag>/<examination>/<tool>', view_func=mcc_service, methods=['POST'])
 
 if __name__ == '__main__':
     logging.info("Starting server...")

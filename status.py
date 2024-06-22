@@ -6,7 +6,7 @@ def list_tools():
     tools = []
 
     for folder in all_folders:
-        if folder in ['bin', '.git', '.settings']:
+        if folder in ['bin', '.git', '.settings', 'run', 'reducer' ]:
             continue
         tools.append(folder)
 

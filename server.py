@@ -1,8 +1,13 @@
 from flask import Flask, request, jsonify, Response
+from flask_cors import CORS
 import subprocess
 import os
+import logging
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
+
+logging.basicConfig(level=logging.INFO)
 
 @app.route('/run', methods=['POST'])
 def run_model_checker():
@@ -25,5 +30,6 @@ def run_model_checker():
     return Response(generate(), mimetype='text/event-stream')
 
 if __name__ == '__main__':
+    logging.info("Starting server...")
     os.makedirs('run', exist_ok=True)
     app.run(host='0.0.0.0', port=5000)

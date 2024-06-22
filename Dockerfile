@@ -11,8 +11,9 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Flask
-RUN pip3 install flask
+# Copy the requirements.txt file and install Python packages
+COPY requirements.txt /app/requirements.txt
+RUN pip3 install -r /app/requirements.txt
 
 # Copy the current directory contents into the container
 COPY . /app

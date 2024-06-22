@@ -3,6 +3,7 @@ from flask_cors import CORS
 import subprocess
 import os
 import logging
+from status import list_tools, list_examinations, get_all_tools_and_examinations
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -28,6 +29,21 @@ def run_model_checker():
         yield f"data:Process finished with exit code {process.returncode}\n\n"
 
     return Response(generate(), mimetype='text/event-stream')
+
+@app.route('/tools/list', methods=['GET'])
+def get_tools():
+    tools = list_tools()
+    return jsonify({'tools': tools})
+
+@app.route('/tools/<tool>/examinations', methods=['GET'])
+def get_examinations(tool):
+    examinations = list_examinations(tool)
+    return jsonify(examinations)
+
+@app.route('/tools/descriptions', methods=['GET'])
+def get_all_tools_and_examinations_route():
+    tools_info = get_all_tools_and_examinations()
+    return jsonify({'tools_info': tools_info})
 
 if __name__ == '__main__':
     logging.info("Starting server...")

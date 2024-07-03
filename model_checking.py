@@ -12,6 +12,9 @@ CORS(app)  # Enable CORS for all routes
 
 logging.basicConfig(level=logging.INFO)
 
+EXAMINATIONS_WITHOUT_XML = ["StateSpace", "OneSafe", "StableMarking", "QuasiLiveness", "Liveness", "ReachabilityDeadlock"]
+EXAMINATIONS_WITH_XML = ["UpperBounds", "ReachabilityFireability", "ReachabilityCardinality", "CTLFireability", "CTLCardinality", "LTLFireability", "LTLCardinality"]
+
 def setup_environment(examination, tool, timeout, is_col):
     env = os.environ.copy()
     env['BK_INPUT'] = "MyModel"
@@ -30,28 +33,27 @@ def generate_unique_folder():
     os.makedirs(run_dir)
     return run_dir
 
-def run_model_checking(pnml_file, examination, tool, is_col, timeout):
+def run_model_checking(pnml_file, logic_file, examination, tool, is_col, timeout):
     run_dir = generate_unique_folder()
     
     pnml_path = os.path.join(run_dir, 'model.pnml')
-    iscolored_path = os.path.join(run_dir, 'iscolored')
+    logic_path = os.path.join(run_dir, 'model.logic') if logic_file else None
 
-    # Save the uploaded file to the run directory
+    # Save the uploaded files to the run directory
     pnml_file.save(pnml_path)
+    if logic_file:
+        logic_file.save(logic_path)
 
-    # Write the iscolored file
+    if logic_file and examination in EXAMINATIONS_WITH_XML:
+        # Run the converter tool
+        subprocess.run(['java', '-jar', '/home/mcc/BenchKit/fr.lip6.converter.jar', '-formula', logic_path, '-o', run_dir])
+        os.rename(os.path.join(run_dir, 'properties.xml'), os.path.join(run_dir, 'Examination.xml'))
+
+    iscolored_path = os.path.join(run_dir, 'iscolored')
     with open(iscolored_path, 'w') as f:
         f.write("TRUE" if is_col else "FALSE")
 
     env = setup_environment(examination, tool, timeout, is_col)
-
-    # Debug prints
-    print(f"Run directory: {run_dir}")
-    print(f"Environment: {env}")
-
-    # List the contents of the run directory for debugging
-    print("Contents of run directory before execution:")
-    print(os.listdir(run_dir))
 
     command = [os.path.join(env['BK_BIN_PATH'], '../BenchKit_head.sh')]
 
@@ -68,7 +70,6 @@ def run_model_checking(pnml_file, examination, tool, is_col, timeout):
             process.stderr.close()
             yield f"data:Process finished with exit code {process.returncode}\n\n"
         finally:
-            # Clean up the run directory after process completion
             shutil.rmtree(run_dir)
             print(f"Cleaned up directory: {run_dir}")
 
@@ -80,10 +81,11 @@ def mcc_service(col_flag, examination, tool):
         return jsonify({'error': 'No model.pnml file provided'}), 400
 
     pnml_file = request.files['model.pnml']
+    logic_file = request.files.get('model.logic')
     is_col = col_flag.upper() == 'COL'
     timeout = request.form.get('timeout', 100, type=int)
 
-    return run_model_checking(pnml_file, examination, tool, is_col, timeout)
+    return run_model_checking(pnml_file, logic_file, examination, tool, is_col, timeout)
 
 if __name__ == '__main__':
     logging.info("Starting server...")

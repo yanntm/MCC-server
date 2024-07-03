@@ -27,6 +27,10 @@ WORKDIR /home/mcc/BenchKit/itstools
 RUN git clone https://github.com/yanntm/ITS-Tools-MCC.git .
 WORKDIR /home/mcc/BenchKit
 
+# Download and setup the converter tool
+RUN wget -O /home/mcc/BenchKit/fr.lip6.converter.jar https://github.com/lip6/ITSTools/raw/gh-pages/fr.lip6.converter.jar
+
+
 # Install additional packages from install_packages.sh scripts
 RUN bash ./install_packages.sh
 

@@ -1,0 +1,1 @@
+property "First LTL" [ltl] : G F (p1>=1) && G F (p0 >= 1) ;

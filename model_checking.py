@@ -54,7 +54,7 @@ def run_model_checking(pnml_file, logic_file, examination, tool, is_col, timeout
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
         )
         converter_stdout, converter_stderr = converter_process.communicate()
-        os.rename(os.path.join(run_dir, 'properties.xml'), os.path.join(run_dir, 'Examination.xml'))
+        os.rename(os.path.join(run_dir, 'properties.xml'), os.path.join(run_dir, f'{examination}.xml'))
 
     iscolored_path = os.path.join(run_dir, 'iscolored')
     with open(iscolored_path, 'w') as f:

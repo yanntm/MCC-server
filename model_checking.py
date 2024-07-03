@@ -44,9 +44,16 @@ def run_model_checking(pnml_file, logic_file, examination, tool, is_col, timeout
     if logic_file:
         logic_file.save(logic_path)
 
+    converter_stdout = ""
+    converter_stderr = ""
+
     if logic_file and examination in EXAMINATIONS_WITH_XML:
-        # Run the converter tool
-        subprocess.run(['java', '-jar', '/home/mcc/BenchKit/fr.lip6.converter.jar', '-formula', logic_path, '-o', run_dir])
+        # Run the converter tool and capture its output
+        converter_process = subprocess.Popen(
+            ['java', '-jar', '/home/mcc/BenchKit/fr.lip6.converter.jar', '-formula', logic_path, '-o', run_dir],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+        )
+        converter_stdout, converter_stderr = converter_process.communicate()
         os.rename(os.path.join(run_dir, 'properties.xml'), os.path.join(run_dir, 'Examination.xml'))
 
     iscolored_path = os.path.join(run_dir, 'iscolored')
@@ -61,6 +68,10 @@ def run_model_checking(pnml_file, logic_file, examination, tool, is_col, timeout
 
     def generate():
         try:
+            # Send the converter tool output first
+            yield f"data:Converter stdout:\n{converter_stdout}\n\n"
+            yield f"data:Converter stderr:\n{converter_stderr}\n\n"
+            
             for stdout_line in iter(process.stdout.readline, ""):
                 yield f"data:{stdout_line}\n\n"
             process.stdout.close()

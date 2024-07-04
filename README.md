@@ -6,6 +6,18 @@ A Dockerized server providing Model-Checking Contest (MCC) compliant tools via a
 
 MCC-server is a Dockerized server that exposes tools from the [MCC-drivers](https://github.com/yanntm/MCC-drivers) project. It provides an interface for running various model-checking tools and retrieving results.
 
+MCC-server is essentially a wrapper for the [MCC-drivers](https://github.com/yanntm/MCC-drivers) project. MCC-drivers adapts various tools to MCC formats and provides the core functionalities that MCC-server exposes.
+
+[PetriVizu](https://github.com/yanntm/PetriVizu) is a demonstrator for the capabilities of MCC compatible tools with a user-friendly front-end for visualizing and analyzing Petri nets. It uses this dockers container if provided to provide an intuitive interface and advanced visualization features to MCC compliant tools.
+
+### Logic File Syntax
+
+Please visit the [property syntax page](https://github.com/yanntm/PetriVizu/blob/master/public/syntax.md) on PetriVizu repository for more information on the human usable syntax proposed to interact with the MCC tools to express bounds, reachability, LTL and CTL properties.
+
+### Supported Tools
+
+MCC-server supports most tools that compete or have competed in the MCC. Refer to the [MCC-drivers repository](https://github.com/yanntm/MCC-drivers) for more details on the tools and their configurations.
+
 ## Setup
 
 ### Prerequisites
@@ -59,22 +71,6 @@ curl -F "model.pnml=@flot.pnml" -F "model.logic=@flot_prop.logic" -F "timeout=10
        -F "timeout=300" \
        http://localhost:1664/mcc/PT/ReachabilityCardinality/itstools
   ```
-
-### Logic File Syntax
-
-Please visit the [property syntax page](https://github.com/yanntm/PetriVizu/blob/master/public/syntax.md) on PetriVizu repository for more information.
-
-## Integration with PetriVizu
-
-PetriVizu is a demonstrator for the capabilities of MCC compatible tools with a user-friendly front-end for visualizing and analyzing Petri nets. It enhances the experience of using MCC tools by providing an intuitive interface and advanced visualization features.
-
-## Reference to MCC-drivers
-
-MCC-server is essentially a wrapper for the [MCC-drivers](https://github.com/yanntm/MCC-drivers) project. MCC-drivers adapts various tools to MCC formats and provides the core functionalities that MCC-server exposes.
-
-### Supported Tools
-
-MCC-server supports most tools that compete or have competed in the MCC. Refer to the [MCC-drivers repository](https://github.com/yanntm/MCC-drivers) for more details on the tools and their configurations.
 
 ## License and Acknowledgment
 

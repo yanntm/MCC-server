@@ -50,7 +50,7 @@ def run_model_checking(pnml_file, logic_file, examination, tool, is_col, timeout
     if logic_file and examination in EXAMINATIONS_WITH_XML:
         # Run the converter tool and capture its output
         converter_process = subprocess.Popen(
-            ['java', '-jar', '/home/mcc/BenchKit/fr.lip6.converter.jar', '-formula', logic_path, '-o', run_dir],
+            ['java', '-jar', '/home/mcc/BenchKit/fr.lip6.converter.jar', '-formula', logic_path, '-examination', examination ,'-o', run_dir],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
         )
         converter_stdout, converter_stderr = converter_process.communicate()

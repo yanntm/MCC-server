@@ -62,7 +62,7 @@ curl -F "model.pnml=@flot.pnml" -F "model.logic=@flot_prop.logic" -F "timeout=10
 
 ### Logic File Syntax
 
-(To be completed: point the formula syntax help on PetriVizu.)
+Please visit the [property syntax page](https://github.com/yanntm/PetriVizu/blob/master/public/syntax.md) on PetriVizu repository for more information.
 
 ## Integration with PetriVizu
 

@@ -27,4 +27,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: yanntm/mcc-drivers:latest
+        tags: yanntm/mcc-server:latest

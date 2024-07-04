@@ -44,8 +44,8 @@ COPY . /app
 # Set the working directory
 WORKDIR /app
 
-# Make port 5000 available to the world outside this container
-EXPOSE 5000
+# Make port 1664 available to the world outside this container
+EXPOSE 1664
 
 # Run the Flask server
 CMD ["python3", "server.py"]

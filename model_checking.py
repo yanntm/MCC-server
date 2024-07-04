@@ -101,4 +101,4 @@ def mcc_service(col_flag, examination, tool):
 if __name__ == '__main__':
     logging.info("Starting server...")
     os.makedirs('/home/mcc/BenchKit/run', exist_ok=True)
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=1664)

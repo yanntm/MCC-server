@@ -29,7 +29,7 @@ Ensure Docker is installed on your machine. You can download it from the [Docker
 
 1. Run the Docker container:
    ```bash
-   docker run -d -p 5000:5000 mcc-server
+   docker run -d -p 1664:1664 mcc-server
    ```
 
 ## Usage
@@ -40,7 +40,7 @@ The server processes PNML models and returns the results from the specified tool
 
 To run a tool on a PNML model, use the following `curl` command from the `samples/` folder:
 ```bash
-curl -F "model.pnml=@flot.pnml" -F "model.logic=@flot_prop.logic" -F "timeout=100" http://localhost:5000/mcc/PT/LTLCardinality/itstools
+curl -F "model.pnml=@flot.pnml" -F "model.logic=@flot_prop.logic" -F "timeout=100" http://localhost:1664/mcc/PT/LTLCardinality/itstools
 ```
 
 ### Endpoints
@@ -57,7 +57,7 @@ curl -F "model.pnml=@flot.pnml" -F "model.logic=@flot_prop.logic" -F "timeout=10
   curl -F "model.pnml=@/path/to/model.pnml" \
        -F "model.logic=@/path/to/model.logic" \
        -F "timeout=300" \
-       http://localhost:5000/mcc/PT/ReachabilityCardinality/itstools
+       http://localhost:1664/mcc/PT/ReachabilityCardinality/itstools
   ```
 
 ### Logic File Syntax

@@ -52,4 +52,4 @@ app.add_url_rule('/mcc/<col_flag>/<examination>/<tool>', view_func=mcc_service, 
 if __name__ == '__main__':
     logging.info("Starting server...")
     os.makedirs('run', exist_ok=True)
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=1664)

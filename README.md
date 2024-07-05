@@ -18,13 +18,44 @@ Please visit the [property syntax page](https://github.com/yanntm/PetriVizu/blob
 
 MCC-server supports most tools that compete or have competed in the MCC. Refer to the [MCC-drivers repository](https://github.com/yanntm/MCC-drivers) for more details on the tools and their configurations.
 
+|          | COL supported   | LTL   | CTL   | Reachability   | StateSpace   | UpperBounds   | Liveness   | OneSafe   | StableMarking   |
+|:---------|:----------------|:------|:------|:---------------|:-------------|:--------------|:-----------|:----------|:----------------|
+| itstools | ✓               | ✓     | ✓     | ✓              | ✓            | ✓             | ✓          | ✓         | ✓               |
+| greatspn | ✓               | ✓     | ✓     | ✓              | ✓            | ✓             | ✓          | ✓         | ✓               |
+| lola     | ✓               | ✓     | ✓     | ✓              |              | ✓             | ✓          | ✓         | ✓               |
+| tapaal   | ✓               | ✓     | ✓     | ✓              |              | ✓             | ✓          | ✓         | ✓               |
+| smart    |                 |       |       | ✓              | ✓            | ✓             | ✓          | ✓         | ✓               |
+| ltsmin   |                 | ✓     | ✓     | ✓              | ✓            | ✓             |            |           |                 |
+| marcie   | ✓               |       | ✓     | ✓              | ✓            | ✓             |            |           |                 |
+| smpt     | ✓               |       |       | ✓              |              |               |            |           |                 |
+| pnmc     |                 |       |       |                | ✓            |               |            |           |                 |
+
+
 ## Setup
 
 ### Prerequisites
 
 Ensure Docker is installed on your machine. You can download it from the [Docker website](https://www.docker.com/products/docker-desktop).
 
-### Building the Docker Image
+### Pulling the Docker Image
+
+1. Pull the Docker image from DockerHub:
+   ```bash
+   docker pull yanntm/mcc-server:latest
+   ```
+   
+2. Run the Docker container:
+   ```bash
+   docker run -d -p 1664:1664 yanntm/mcc-server:latest
+   ```
+   
+3. Query the MCC-server (e.g. curl), or open PetriVizu
+   https://yanntm.github.io/PetriVizu
+   to interact from Analysis mode.  
+
+### Building the Docker Image (Optional)
+
+If you prefer to build the Docker image locally, follow these steps:
 
 1. Clone the repository:
    ```bash
@@ -41,7 +72,7 @@ Ensure Docker is installed on your machine. You can download it from the [Docker
 
 1. Run the Docker container:
    ```bash
-   docker run -d -p 1664:1664 mcc-server
+   docker run -d -p 1664:1664 yanntm/mcc-server:latest
    ```
 
 ## Usage
@@ -71,6 +102,26 @@ curl -F "model.pnml=@flot.pnml" -F "model.logic=@flot_prop.logic" -F "timeout=10
        -F "timeout=300" \
        http://localhost:1664/mcc/PT/ReachabilityCardinality/itstools
   ```
+
+## Querying Available Tools and Examinations
+
+The MCC-server provides an endpoint to query the list of supported tools and their corresponding examinations.
+
+### Endpoint
+
+- **`GET /tools/descriptions`**: Retrieves a list of all available tools and the examinations they support.
+
+### Example Request
+
+To get the list of available tools and examinations, use the following `curl` command:
+
+```bash
+curl http://localhost:1664/tools/descriptions
+```
+
+This command will return a JSON object containing details about each tool and the examinations it supports.
+
+You can also run the "showTools.py" script in this repository to build a readable list of tools and capacity.
 
 ## License and Acknowledgment
 

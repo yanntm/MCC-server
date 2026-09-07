@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     unzip \
-    openjdk-17-jdk \
+    openjdk-21-jdk \
     psmisc \
     wget \
     python3-flask \
